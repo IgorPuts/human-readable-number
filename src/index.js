@@ -1,31 +1,56 @@
 module.exports = function toReadable(number) {
-  const integerString = ['zero', 'one', 'two', 'three', 'four', 'five',
-    'six', 'seven', 'eight', 'nine', 'ten',
-    'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen',
-    'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-  const tenString = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty',
-    'sixty', 'seventy', 'eighty', 'ninety'];
-  if (number < 0) {
-    return '';
+  if (number < 0 || number > 999) {
+    throw new Error('Number must be between of 1 and 999');
   }
-  if (number < 20) {
-    return integerString[number];
-  }
-  if (number < 100) {
-    let ten = tenString[Math.floor(number / 10)];
-    let integer = number % 10;
-    if (integer === 0) {
-      return ten;
-    }
-    return ten + ' ' + integerString[integer];
-  }
-  if (number < 1000) {
-    let hundred = integerString[Math.floor(number / 100)];
-    let remainder = number % 100;
-    if (remainder === 0) {
-      return hundred + ' hundred';
-    }
-    return hundred + ' hundred ' + toReadable(remainder);
-  }
-};
 
+  const integer = [
+    'zero',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine',
+    'ten',
+    'eleven',
+    'twelve',
+    'thirteen',
+    'fourteen',
+    'fifteen',
+    'sixteen',
+    'seventeen',
+    'eighteen',
+    'nineteen',
+  ];
+
+  const tens = [
+    'twenty',
+    'thirty',
+    'forty',
+    'fifty',
+    'sixty',
+    'seventy',
+    'eighty',
+    'ninety',
+  ];
+
+  let result = '';
+
+  if (number < 20) {
+    result = integer[number];
+  } else if (number < 100) {
+    result =
+      tens[Math.floor(number / 10) - 2] +
+      (number % 10 ? ` ${integer[number % 10]}` : '');
+  } else if (number < 1000) {
+    const remainder = number % 100;
+    result = `${integer[Math.floor(number / 100)]} hundred`;
+    if (remainder > 0) {
+      result += ` ${toReadable(remainder)}`;
+    }
+  }
+  return result;
+};
