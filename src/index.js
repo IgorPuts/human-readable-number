@@ -5,7 +5,9 @@ module.exports = function toReadable(number) {
     'sixteen', 'seventeen', 'eighteen', 'nineteen'];
   const tenString = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty',
     'sixty', 'seventy', 'eighty', 'ninety'];
-  if (number < 0) return '';
+  if (number < 0) {
+    return '';
+  }
   if (number < 20) {
     return integerString[number];
   }
